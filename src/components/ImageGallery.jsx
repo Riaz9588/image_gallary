@@ -38,7 +38,7 @@ const Gallery = () => {
     setSelectedImages(new Set());
   };
 
-  const onDragEnd = (result) => {
+  const onDragEnd = (result, provided) => {
     if (!result.destination) return;
 
     const items = Array.from(images);
@@ -49,63 +49,67 @@ const Gallery = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="">
       {selectedImages.size > 0 && (
-        <div className="sticky top-0 bg-gray-200 text-white p-4 flex justify-between items-center">
-          <div className='text-black font-semibold'>Selected Images: {selectedImages.size}</div>
-          {selectedImages.size > 0 && (
-            <button onClick={handleDeleteSelected} className="p-2 rounded-full bg-red-500 text-white">
-              <BsTrash className="h-6 w-6" />
-            </button>
-          )}
+        <div className="shadow-lg bg-white">
+          <div className="sticky top-0 z-10 container mx-auto text-black font-semibold p-4 flex justify-between items-center">
+            <div>Selected Images: {selectedImages.size}</div>
+            {selectedImages.size > 0 && (
+              <button onClick={handleDeleteSelected} className="p-2 rounded-full bg-red-500 text-white">
+                <BsTrash className="h-6 w-6" />
+              </button>
+            )}
+          </div>
         </div>
       )}
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="gallery">
-          {(provided) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="grid grid-cols-5 gap-4 mt-4 relative"
-            >
-              {images.map((image, index) => (
-                <Draggable key={index} draggableId={`image-${index}`} index={index}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className={`relative ${index === 0 ? 'row-span-2 col-span-2' : ''}`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedImages.has(index)}
-                        onChange={() => handleCheckboxChange(index)}
-                        className="absolute top-2 left-2"
-                      />
-                      <img src={image} alt={`Image ${index}`} className="w-full h-auto" />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-              <div className="flex items-center justify-center bg-gray-200 rounded-md h-72">
-                <label htmlFor="fileInput" className="cursor-pointer">
-                  <BsPlusCircle className="h-20 w-20 text-gray-400" />
-                </label>
-                <input
-                  id="fileInput"
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                />
+      <div className="container mx-auto p-4">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="galleryID" direction="horizontal">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="galleryID grid grid-cols-5 gap-4 mt-4 relative container mx-auto"
+              >
+                {images.map((image, index) => (
+                  <Draggable key={index} draggableId={`image-${index}`} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className={`relative shadow-lg ${index === 0 ? 'col-span-2 row-span-2' : ''}`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedImages.has(index)}
+                          onChange={() => handleCheckboxChange(index)}
+                          className="absolute top-2 left-2"
+                        />
+                        <img src={image} alt={`Image ${index}`} className="w-full h-full" />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+                <div className="flex items-center justify-center bg-gray-200 rounded-md h-72">
+                  <label htmlFor="fileInput" className="cursor-pointer">
+                    <BsPlusCircle className="h-20 w-20 text-gray-400" />
+                  </label>
+                  <input
+                    id="fileInput"
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                  />
+                </div>
               </div>
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
     </div>
   );
 };
