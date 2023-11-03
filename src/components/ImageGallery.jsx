@@ -55,7 +55,6 @@ const ImageGallery = () => {
   return (
     <>
       {/* navbar starts */}
-
       <div className="shadow-sm bg-white">
         {selectedImages.size > 0 ?
           <div className="container mx-auto font-semibold p-4 flex justify-between items-center">
@@ -68,10 +67,9 @@ const ImageGallery = () => {
           </div>
         }
       </div>
-
       {/* navbar ends */}
 
-      <div className="grid sm:grid-cols-4 md:grid-cols-6 gap-4 container mx-auto p-4 mt-4" onDragOver={(e) => handleDragOver(e)}>
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 container mx-auto p-4 mt-4" onDragOver={(e) => handleDragOver(e)}>
         {images.map((image, index) => (
           <div
             key={index}
